@@ -1,0 +1,20 @@
+Build a tiny paper-trading bot for make.fun competition
+u-gorun-gadget-tiny-bot-easy-2-beat-a48f3ce1 ("Tiny Bot, Easy $2: Beat
+Buy-and-Hold on Solana"), harness agent-fun/bars-replay/v1, Python 3.13
+standard library only, $10,000 USDC, 7 symbols (FARTCOIN, JITOSOL,
+POPCAT, RAY, SOL, WETH, WIF), 1h bars, fee 10 bps + slippage 5 bps,
+max 10 open positions, max 16 orders/bar, max 25% weight per position,
+no shorts, no leverage, min 8 trades, max drawdown 25%.
+
+The final window (72 hourly bars, 27-30 Nov 2026) does not exist yet,
+so the strategy must be robust across regimes, not fitted to the dev
+window: buy all 7 symbols at the open (matching buy-and-hold's entry so
+it never lags in an up market), rotate into the top 4 by trailing
+12-bar return at 25% of equity each, rebalance every 12 bars, and exit
+everything to cash when the equal-weight index's trailing 12-bar return
+falls to +1% or below. Validate with a faithful local replay of the
+harness's fill math on the full dev window, rolling 72-bar windows,
+halves, the dev bull stretch, and synthetic slow-grind windows; the
+entry must beat buy-and-hold in (nearly) every window and stay above it
+at 2x fees, with max drawdown well under the 25% cap and deterministic
+byte-identical action logs across runs.
